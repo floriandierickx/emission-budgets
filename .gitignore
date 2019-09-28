@@ -1,0 +1,4 @@
+credentials
+*.pyc
+.DS_Store
+.env
