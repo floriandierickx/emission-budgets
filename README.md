@@ -5,7 +5,11 @@ Country-specific emission budgets visualisation
 
 Idea is to visualise blogpost [http://www.realclimate.org/index.php/archives/2019/08/how-much-co2-your-country-can-still-emit-in-three-simple-steps/] and dataset [www.pik-potsdam.de/~stefan/Country%20CO2%20emissions%202016%20calculator.xlsx] from Stefan Rahmstorf
 
-# procedure : run locally
+# Data
+
+The original data and EDGAR dataset from JRC have been combined in one google sheet that is imported in the app : [https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing] (sheet `import`)
+
+# Procedure : run locally
 
 Note: below instructions are for OSX with Homebrew installed.
 
