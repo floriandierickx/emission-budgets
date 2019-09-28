@@ -33,8 +33,27 @@ pip install gunicorn
 
 In project folder (terminal): `pip freeze > requirements.txt`
 
-## Install Heroku of not yet done
+## Install Heroku if not yet done
 
 `brew tap heroku/brew && brew install heroku`
 
-##
+## Create Heroku app
+
+```
+heroku create lava-vino # replace "lava-vino" with your-app-name
+git add .
+git commit -m "Initial commit"
+git push heroku master
+heroku ps:scale web=1
+```
+
+### If this fails: adjust build packs
+Background: [https://stackoverflow.com/questions/41804507/h14-error-in-heroku-no-web-processes-running] and [https://help.heroku.com/W23OAFGK/why-am-i-seeing-couldn-t-find-that-process-type-when-trying-to-scale-dynos]
+```
+heroku buildpacks:clear
+heroku buildpacks:add --index heroku/python
+git commit --allow-empty -m "Adjust buildpacks on Heroku"
+git push heroku master
+```
+
+## Update Heroku app
