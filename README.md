@@ -44,7 +44,7 @@ in WD: create file `Procfile` (without extention) with content `web: gunicorn ap
 ## Create Heroku app
 
 ```
-heroku create lava-vino # replace "lava-vino" with your-app-name
+heroku create emission budgets
 git add .
 git commit -m "Initial commit"
 git push heroku master
@@ -62,3 +62,10 @@ git push heroku master
 ```
 
 ## Update Heroku app
+
+```
+git add .
+git commit -m "commit text"
+git push heroku master
+heroku ps:scale web=1
+```
