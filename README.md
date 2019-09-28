@@ -33,6 +33,10 @@ pip install gunicorn
 
 In project folder (terminal): `pip freeze > requirements.txt`
 
+## create Procfile
+
+in WD: create file `Procfile` (without extention) with content `web: gunicorn app:server`
+
 ## Install Heroku if not yet done
 
 `brew tap heroku/brew && brew install heroku`
@@ -46,6 +50,7 @@ git commit -m "Initial commit"
 git push heroku master
 heroku ps:scale web=1
 ```
+Project should be running at [https://emission-budgets.herokuapp.com/]
 
 ### If this fails: adjust build packs
 Background: [https://stackoverflow.com/questions/41804507/h14-error-in-heroku-no-web-processes-running] and [https://help.heroku.com/W23OAFGK/why-am-i-seeing-couldn-t-find-that-process-type-when-trying-to-scale-dynos]

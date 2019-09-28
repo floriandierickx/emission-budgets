@@ -2,3 +2,5 @@ credentials
 *.pyc
 .DS_Store
 .env
+credentials.json
+token.pickle
