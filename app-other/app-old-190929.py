@@ -13,7 +13,7 @@ from google.auth.transport.requests import Request
 
 # Pandas Dataframe
 import pandas as pd
-# import numpy as np
+import numpy as np
 
 # Google API : If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -22,9 +22,54 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SPREADSHEET_ID = '1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo'
 RANGE_NAME = 'import!A1:CC210'
 
+# Google API : Example code (from https://developers.google.com/sheets/api/quickstart/python)
+
+# def main():
+#     """Shows basic usage of the Sheets API.
+#     Prints values from a sample spreadsheet.
+#     """
+#     creds = None
+#     # The file token.pickle stores the user's access and refresh tokens, and is
+#     # created automatically when the authorization flow completes for the first
+#     # time.
+#     if os.path.exists('token.pickle'):
+#         with open('token.pickle', 'rb') as token:
+#             creds = pickle.load(token)
+#     # If there are no (valid) credentials available, let the user log in.
+#     if not creds or not creds.valid:
+#         if creds and creds.expired and creds.refresh_token:
+#             creds.refresh(Request())
+#         else:
+#             flow = InstalledAppFlow.from_client_secrets_file(
+#                 'credentials.json', SCOPES)
+#             creds = flow.run_local_server(port=0)
+#         # Save the credentials for the next run
+#         with open('token.pickle', 'wb') as token:
+#             pickle.dump(creds, token)
+#
+#     service = build('sheets', 'v4', credentials=creds)
+#
+#     # Call the Sheets API
+#     sheet = service.spreadsheets()
+#     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
+#                                 range=RANGE_NAME).execute()
+#     values = result.get('values', [])
+#
+#     if not values:
+#         print('No data found.')
+#     else:
+#         print('Name, Major:')
+#         for row in values:
+#             # Print columns A and E, which correspond to indices 0 and 4.
+#             print('%s, %s' % (row[0], row[4]))
+#
+# # if __name__ == '__main__':
+# #     main()
+
 ##################################
 # Get google carbon budget sheet #
 ##################################
+
 # From: https://towardsdatascience.com/how-to-access-google-sheet-data-using-the-python-api-and-convert-to-pandas-dataframe-5ec020564f0e
 
 
@@ -57,6 +102,7 @@ def get_google_sheet(spreadsheet_id, range_name):
 ###########################################################
 # Convert carbon budget sheet to pandas frame 'df_budget' #
 ###########################################################
+
 # From: https://towardsdatascience.com/how-to-access-google-sheet-data-using-the-python-api-and-convert-to-pandas-dataframe-5ec020564f0e
 
 
@@ -88,6 +134,7 @@ df_budget = result2df(result)  # name data
 print('Dataframe size = ', df_budget.shape)
 print(df_budget.head())  # print pandas dataframe
 
+
 # App interface : https://dash.plot.ly/getting-started
 external_stylesheets = [
     'https://codepen.io/chriddyp/pen/bWLwgP.css']  # select stylesheet
@@ -97,54 +144,22 @@ server = app.server
 
 app.layout = html.Div(children=[
     html.H1(children='Country Carbon Budget Calculator'),  # title of graph
+
     html.Div([  # start of interactive inputs
 
-        ##################
-        # Select country # id : country-dropdown
-        ##################
+        ###############################
+        # Select country in dashboard #
+        ###############################
+
         html.P([  # country selection button
             html.Label('Select your country'),
             # dcc.Input(id='mother_birth', value=1952, type='number'),
             dcc.Dropdown(
                 id='country-dropdown',  # name country
                 options=[{'label': i, 'value': i} for i in df_budget.country],
-                value='Belgium',  # initial value
+                # value='Belgium',
             )
-        ]),
-        ########################
-        # Select Carbon Budget # id : carbon-budget
-        ########################
-        html.P([  # country selection button
-            dcc.Markdown('''
-            #### Carbon Budget
-            Carbon budgets are expressed in Gt CO2, and are used to estimate the amount of carbon dioxide we can still emit before reaching a certain level of warming.
-            For example, to have a 50 % chance to stay below 1.5 °C - *expressed as the 50th percentile of the Transient Climate Response to Cumulative Emissions (TCRC)* -
-            we can emit 580 Gt CO2 calculated from 1 january 2018 onwards. However, some uncertainties remain on this amount. If earth system feedbacks are taken into account,
-            this could decrease with 100 Gt CO2. Other factors not related to CO2 emissions, non-CO2 from other GHGs response uncertainty, distribution of TCRC, historical
-            emission uncertainty and recent emission uncertainty can alter this budget with respectively ±250, -400 to +200, +100 to +200, ±250 and ±20 Gt. Following a precautionary
-            principle, this budget could thus already be depleted. See the IPCC's latest report on 1.5 °C warming for a range of values:
-            '''),
-            html.A("IPCC Special Report on Global Warming of 1.5 °C - Table 2.2: The assessed remaining carbon budget and its uncertainties", href='https://hyp.is/LwH2ROKyEem027sdvofrBw/www.ipcc.ch/sr15/chapter/chapter-2/', target="_blank"),
-            html.Label('Enter carbon budget in Gt CO2:'),
-            # dcc.Input(id='mother_birth', value=1952, type='number'),
-            dcc.Input(
-                  id='carbon-budget',
-                  value=580,
-                  type="number",
-                  min=50,
-                  step=1,
-                  max=2500,
-            )
-        ]),
-        #######################
-        # Explain calculation #
-        #######################
-        html.P([
-            dcc.Markdown('''
-            asdfasf
-            '''),
-        ])
-    ]),
+        ])]),  # stop interactive inputs
 
     ###########################################
     # CREATE STARTING COUNTRYY BAR GRAPH HERE #
@@ -153,26 +168,45 @@ app.layout = html.Div(children=[
     dcc.Graph(
         id='emissions-graph',  # Name graph
         # Select first country + Select row based on column value : df.loc[df['favorite_color'] == 'yellow']
+        # df_budget_country_transposed = df_budget_country.transpose()
         figure={
             'data': [
 
                 # First bar chart with historical values
+
                 go.Bar(
                     name='Historical',
+
                     x=list(range(1970, 3000)),  # create list from 1970 to 1980
                     y=df_budget.loc[df_budget['country'] == 'Belgium',
                                     '1970':'2017'].values.flatten().tolist(),
+
+                    #DEMO (working)
+                    # x=[20.1, 14, 23.4], # example
+                    #y=['giraffes', 'orangutans', 'monkeys'],
+
+                    # TRYOUTS/ALTERNATIVES
+                    # y=list(df_budget.loc[df_budget['country'] == 'Belgium', '1970':'2017'].values.flatten().tolist()) # use values from Belgium
+                    # x=list(df_budget.columns),
+                    #y=list(np.float_(df_budget.loc[df_budget['country'] == 'Belgium', '1970':'1979'].values.tolist())),
+                    # x=df_budget_country.loc[:,'1970':'1980'],
+                    # df_budget_country=df_budget[df_budget['country'] == 'Belgium'], # select values for given range of years based on label (column) [or index (row) ]) : .loc[row-range,column-range]
+                    #y=df_budget.loc[:, '1970':'1980'],
+                    # y=df_budget.loc[df_budget['country'] == 'Belgium', '1970':'1980'].transpose().values.tolist(), # select total emissions from Belgium from 1970 to 1980
+                    # y=df_budget.loc[df_budget['country'] == 'Belgium', '1970':'1980'].values.tolist(),
 
                 ),
 
                 # Second bar chart with future values
 
                 # go.Bar(
-                #     name='Carbon Budget',
-                #     # x=list(range(1980,2000)),
-                #     y=1,
+                #     name = 'Future',
+                #     x=list(range(1980,2000)),
+                #
                 # ),
 
+                # {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
+                # {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
             ],
             'layout': {
                 'title': 'Historical Emissions and Future 1.5 Degree Target (linear reduction in emissions)',
@@ -200,6 +234,39 @@ def update_figure(selected_country):
         )
         ]
     }
+
+
+# Start old code :
+# @app.callback(
+#     Output('emissions-graph', 'figure'),  # insert graph name
+#     [Input('country-dropdown', 'value')])
+# def update_figure(selected_country):
+#     #filter country-list with selected country
+#     filtered_df_budget = df_budget[df_budget.country == selected_country]
+#     traces = []
+#     for i in filtered_df_budget.country.unique():
+#         df_budget_by_country = filtered_df_budget[filtered_df_budget['country'] == i]
+#         traces.append(go.Bar(
+#             name='Historical',
+#             x=list(range(1970, 3000)), # create list from 1970 to 1980
+#             y=df_budget_by_country.loc[df_budget_by_country['country'] == 'selected_country', '1970':'2017'].values.flatten().tolist(),
+# # OLD:
+#             # x=df_budget_by_country['gdpPercap'],
+#             # y=df_budget_by_country['lifeExp'],
+#             # text=df_budget_by_country'country'],
+#             # mode='markers',
+#             # opacity=0.7,
+#             # marker={
+#             #     'size': 15,
+#             #     'line': {'width': 0.5, 'color': 'white'}
+#             # },
+#             # name=i
+#
+# # END OLD
+#
+#         ))
+
+# End code
 
 
 if __name__ == '__main__':
