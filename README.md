@@ -73,3 +73,5 @@ git commit -m "commit text"
 git push heroku master
 heroku ps:scale web=1
 ```
+
+# Local testing

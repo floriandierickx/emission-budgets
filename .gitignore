@@ -3,3 +3,4 @@ credentials
 .DS_Store
 .env
 token.pickle
+credentials.json

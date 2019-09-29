@@ -15,78 +15,83 @@ from google.auth.transport.requests import Request
 import pandas as pd
 # import numpy as np
 
-# Google API : If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-
-# Google API : ID and range of spreadsheet.
-SPREADSHEET_ID = '1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo'
-RANGE_NAME = 'import!A1:CC210'
-
 ##################################
-# Get google carbon budget sheet #
+# Get google carbon budget sheet # CANCELLED AT THE MOMENT, NOT WORRKING IN HEROKU
 ##################################
 # From: https://towardsdatascience.com/how-to-access-google-sheet-data-using-the-python-api-and-convert-to-pandas-dataframe-5ec020564f0e
 
+# # Google API : If modifying these scopes, delete the file token.pickle.
+# SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+#
+# # Google API : ID and range of spreadsheet.
+# SPREADSHEET_ID = '1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo'
+# RANGE_NAME = 'import!A1:CC210'
+#
+# def get_google_sheet(spreadsheet_id, range_name):
+#     # Call the Sheets API
+#     creds = None
+#     # The file token.pickle stores the user's access and refresh tokens, and is
+#     # created automatically when the authorization flow completes for the first
+#     # time
+#     if os.path.exists('token.pickle'):
+#         with open('token.pickle', 'rb') as token:
+#             creds = pickle.load(token)
+#     # If there are no (valid) credentials available, let the user log in.
+#     if not creds or not creds.valid:
+#         if creds and creds.expired and creds.refresh_token:
+#             creds.refresh(Request())
+#         else:
+#             flow = InstalledAppFlow.from_client_secrets_file(
+#                 'credentials.json', SCOPES)
+#             creds = flow.run_local_server(port=0)
+#         # Save the credentials for the next run
+#         with open('token.pickle', 'wb') as token:
+#             pickle.dump(creds, token)
+#     service = build('sheets', 'v4', credentials=creds)
+#     sheet = service.spreadsheets()
+#     result_budget = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
+#                                        range=RANGE_NAME).execute()
+#     return result_budget
+#
+# ###########################################################
+# # Convert carbon budget sheet to pandas frame 'df_budget' #
+# ###########################################################
+# # From: https://towardsdatascience.com/how-to-access-google-sheet-data-using-the-python-api-and-convert-to-pandas-dataframe-5ec020564f0e
+#
+#
+# def result2df(result_budget):
+#     """ Converts Google sheet data to a Pandas DataFrame.
+#     Note: This script assumes that your data contains a header file on the first row!
+#     Also note that the Google API returns 'none' from empty cells - in order for the code
+#     below to work, you'll need to make sure your sheet doesn't contain empty cells,
+#     or update the code to account for such instances.
+#     """
+#     header = result.get('values', [])[0]   # Assumes first line is header!
+#     values = result.get('values', [])[1:]  # Everything else is data.
+#     if not values:
+#         print('No data found.')
+#     else:
+#         all_data = []
+#         for col_id, col_name in enumerate(header):
+#             column_data = []
+#             for row in values:
+#                 column_data.append(row[col_id])
+#             ds = pd.Series(data=column_data, name=col_name)
+#             all_data.append(ds)
+#         df = pd.concat(all_data, axis=1)
+#         return df
+#
+#
+# result = get_google_sheet(SPREADSHEET_ID, RANGE_NAME)
+# df_budget = result2df(result)  # name data
+# print('Dataframe size = ', df_budget.shape)
+# print(df_budget.head())  # print pandas dataframe
 
-def get_google_sheet(spreadsheet_id, range_name):
-    # Call the Sheets API
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
-    service = build('sheets', 'v4', credentials=creds)
-    sheet = service.spreadsheets()
-    result_budget = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
-                                       range=RANGE_NAME).execute()
-    return result_budget
+###############
+# Import data #
+###############
 
-###########################################################
-# Convert carbon budget sheet to pandas frame 'df_budget' #
-###########################################################
-# From: https://towardsdatascience.com/how-to-access-google-sheet-data-using-the-python-api-and-convert-to-pandas-dataframe-5ec020564f0e
-
-
-def result2df(result_budget):
-    """ Converts Google sheet data to a Pandas DataFrame.
-    Note: This script assumes that your data contains a header file on the first row!
-    Also note that the Google API returns 'none' from empty cells - in order for the code
-    below to work, you'll need to make sure your sheet doesn't contain empty cells,
-    or update the code to account for such instances.
-    """
-    header = result.get('values', [])[0]   # Assumes first line is header!
-    values = result.get('values', [])[1:]  # Everything else is data.
-    if not values:
-        print('No data found.')
-    else:
-        all_data = []
-        for col_id, col_name in enumerate(header):
-            column_data = []
-            for row in values:
-                column_data.append(row[col_id])
-            ds = pd.Series(data=column_data, name=col_name)
-            all_data.append(ds)
-        df = pd.concat(all_data, axis=1)
-        return df
-
-
-result = get_google_sheet(SPREADSHEET_ID, RANGE_NAME)
-df_budget = result2df(result)  # name data
-print('Dataframe size = ', df_budget.shape)
-print(df_budget.head())  # print pandas dataframe
+df_budget = pd.read_csv("import.csv")
 
 # App interface : https://dash.plot.ly/getting-started
 external_stylesheets = [
