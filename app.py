@@ -103,7 +103,6 @@ server = app.server
 app.layout = html.Div(children=[
     html.H1(children='Country Carbon Budget Calculator'),  # title of graph
     html.Div([  # start of interactive inputs
-
         ##################
         # Select country # id : country-dropdown
         ##################
@@ -120,16 +119,11 @@ app.layout = html.Div(children=[
         # Select Carbon Budget # id : carbon-budget
         ########################
         html.P([  # country selection button
-            dcc.Markdown('''
-            #### Carbon Budget
-            Carbon budgets are expressed in Gt CO2, and are used to estimate the amount of carbon dioxide we can still emit before reaching a certain level of warming.
-            For example, to have a 50 % chance to stay below 1.5 °C - *expressed as the 50th percentile of the Transient Climate Response to Cumulative Emissions (TCRC)* -
-            we can emit 580 Gt CO2 calculated from 1 january 2018 onwards. However, some uncertainties remain on this amount. If earth system feedbacks are taken into account,
-            this could decrease with 100 Gt CO2. Other factors not related to CO2 emissions, non-CO2 from other GHGs response uncertainty, distribution of TCRC, historical
-            emission uncertainty and recent emission uncertainty can alter this budget with respectively ±250, -400 to +200, +100 to +200, ±250 and ±20 Gt. Following a precautionary
-            principle, this budget could thus already be depleted. See the IPCC's latest report on 1.5 °C warming for a range of values:
-            '''),
-            html.A("IPCC Special Report on Global Warming of 1.5 °C - Table 2.2: The assessed remaining carbon budget and its uncertainties", href='https://hyp.is/LwH2ROKyEem027sdvofrBw/www.ipcc.ch/sr15/chapter/chapter-2/', target="_blank"),
+            html.H3('Carbon Budget'),
+            html.P(['Carbon budgets are expressed in Gt CO2, and are used to estimate the amount of carbon dioxide we can still emit before reaching a certain level of warming. For example, to have a 50 % chance to stay below 1.5 °C - *expressed as the 50th percentile of the Transient Climate Response to Cumulative Emissions (TCRC)* - we can emit 580 Gt CO2 calculated from 1 january 2018 onwards. However, some uncertainties remain on this amount. If earth system feedbacks are taken into account, this could decrease with 100 Gt CO2. Other factors not related to CO2 emissions, non-CO2 from other GHGs response uncertainty, distribution of TCRC, historical emission uncertainty and recent emission uncertainty can alter this budget with respectively ±250, -400 to +200, +100 to +200, ±250 and ±20 Gt. Following a precautionary principle, this budget could thus already be depleted. See the ',
+            html.A("IPCC's latest report on 1.5 °C warming (Table 2.2)", href='https://hyp.is/LwH2ROKyEem027sdvofrBw/www.ipcc.ch/sr15/chapter/chapter-2/', target='_blank'),
+            ' for a range of possible values.'
+            ]),
             html.Label('Enter carbon budget in Gt CO2:'),
             # dcc.Input(id='mother_birth', value=1952, type='number'),
             dcc.Input(
@@ -145,9 +139,7 @@ app.layout = html.Div(children=[
         # Explain calculation #
         #######################
         html.P([
-            dcc.Markdown('''
-            asdfasf
-            '''),
+        
         ])
     ]),
 
@@ -183,8 +175,32 @@ app.layout = html.Div(children=[
                 'title': 'Historical Emissions and Future 1.5 Degree Target (linear reduction in emissions)',
             }
         }
-    )
+    ),
+    ###################
+    # Background info #
+    ###################
+    html.H3('Background'),
+    html.P(['Created by ', # acknowledgement
+            html.A("Florian Dierickx", href='https://floriandierickx.github.io/', target='_blank'),
+            ' based on the ',
+            html.A("idea", href='http://www.realclimate.org/index.php/archives/2019/08/how-much-co2-your-country-can-still-emit-in-three-simple-steps/', target='_blank'),
+            ' and ',
+            html.A("data", href='www.pik-potsdam.de/~stefan/Country%20CO2%20emissions%202016%20calculator.xlsx', target='_blank'),
+            ' from ',
+            html.A("Stefan Rahmstorf", href='https://twitter.com/rahmstorf', target="_blank"),
+            ', completemented with ',
+            html.A("historical emissions data (EDGAR) from the EU Joint Research Centre", href='https://edgar.jrc.ec.europa.eu/overview.php?v=booklet2018', target="_blank"),
+            '.',
+    ]),
+    html.P(['Find out more about the data on ',
+            html.A("Google Sheets", href='https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing', target='_blank'),
+            ', get the code, or help improve the application on ',
+            html.A("GitHub", href='https://github.com/floriandierickx/emission-budgets', target='_blank'),
+            '.',
+    ]),
 ])
+
+
 
 # Create callback to update graph with Country selection input (see html.Div) : https://dash.plot.ly/getting-started-part-2
 
