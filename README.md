@@ -49,6 +49,35 @@ Help is welcome!
 
 UPDATE : more detailed information on how this could be calculated is discussed in [https://github.com/floriandierickx/emission-budgets/issues/1](this issue).
 
+# More detailed information on calculation and what is known:
+
+- The **country-specific annual emission in 2017, 2018 or 2019**: assumed to have stayed the same as in 2017, as is this the latest data available for all the countries in the JRC EDGAR historical emission database (and 2019 is almost over). This yearly emission data for a specific country can be taken directly from the imported dataset using
+  ```python
+  round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),
+  ```
+  (see [line 299](https://github.com/floriandierickx/emission-budgets/blob/21ef1b909c20e65c9a22da714e19d46104c9270f/app.py#L299))
+
+- The **country-specific emission budget that can be used from 2016 onwards** (year of the Paris agreement). This value can be calculated from the data using (see [lines 288 to 293](https://github.com/floriandierickx/emission-budgets/blob/21ef1b909c20e65c9a22da714e19d46104c9270f/app.py#L288), based on the premise that the budget is distributed on an equal per capita basis at the start of 2016.
+  ```python
+  round(((carbon_budget + 80)  # carbon budget country
+      * df_budget.loc[df_budget['country'] == selected_country,   'total_kton_CO2'].values.flatten().tolist()[0])
+      / df_budget.loc[df_budget['country'] == selected_country,   'per_capita_CO2'].values.flatten().tolist()[0]
+      / global_emissions[0]
+      * global_per_capita_emissions[0]
+      / 1000, 2),
+  ```
+  This value is calculated as:
+  <img width="896" alt="Screenshot 2019-09-30 at 17 53 58" src="https://user-images.githubusercontent.com/12695083/65895165-4c44c980-e3ab-11e9-85b4-fb5fd99cc875.png">
+
+  (taken from the [spreadsheet](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing) of Stefan Rahmstorf - for example cell E25 for Afghanistan in the `original` sheet. I hope I interpreted it here correctly)
+
+- The **country-specific emission budget that is left to deplete from 2019 onwards**, accounting for the 2 years that have already passed: this can be calculated by using the above 2016-country emission budget and deducing two years of constant 2017-emissions (see [lines 305-310](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L305)), by substracting
+  ```python
+  - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2)
+  ```
+
+From then it is straightforward to calculate the **remaining years left at constant emissions** for each country, by dividing the remaining carbon budget from 2019 onwards by a constant 2017 (or 2018/2019) emission level, as done in [line 316 to 322](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L316).
+
 # Workflow
 
 - The app can be run on a local server. See below for more information.
