@@ -5,34 +5,46 @@ Country-specific emission budgets visualisation. Beta-version accessible on http
 
 Idea is to visualise countries remaining carbon budget interactively, based on the [blogpost](http://www.realclimate.org/index.php/archives/2019/08/how-much-co2-your-country-can-still-emit-in-three-simple-steps/) and [dataset](www.pik-potsdam.de/~stefan/Country%20CO2%20emissions%202016%20calculator.xlsx) from Stefan Rahmstorf.
 
-# Data
+# Data sources
 
 The original [dataset](http://www.realclimate.org/index.php/archives/2019/08/how-much-co2-your-country-can-still-emit-in-three-simple-steps/) is extended with [EDGAR historical emissions data from JRC](https://edgar.jrc.ec.europa.eu/overview.php?v=booklet2018) and [World Bank Population data](https://databank.worldbank.org/reports.aspx?source=2&series=SP.POP.TOTL&country=#). The combined dataset that is used in the application can be found in [this google sheet](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing) (imported sheet = `import`). To be able to display the historical EDGAR emission data for each country, the country order in the original excel sheet has been changed a little bit.
 
-# Working
+
+# What is currently working
 
 Note: the app uses Dash and Plotly to create an interactive figure. The script `app.py` is divided in 3 main parts:
-1. Data import and definition of global variables : [link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L13)
-2. The app layout with text, interative inputs and outputs : [link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L33) -> see below for more details
+1. Data import and definition of global variables : [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L13)
+   - `df_budget = pd.read_csv("data.csv")` : importing the `data.csv` file, which is the same as the `input` sheet in the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing)
+   - definition of global variables:
+      - `global_budget_2016 = 580 + 80` : used for testing, not reused in the code
+      - `global_emissions = 40` : global emissions in 2016 (Gt CO2), taken from the spreadsheet, taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E16`
+      - `global_per_capita_emissions = 5.4` : global per capita emissions in 2016 (t CO2), taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E18`
+2. The app layout with text, interative inputs and outputs : [https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L33](code link). It contains
+   - A **country-selection box**, id = `country-dropdown` to be selected from `df_budget.country`
+   - **Global carbon budget input**, id = `carbon-budget` to stay within the range of `50` and `2500`
+   - **Global reach of global carbon budget paragraph** :, id = `global-reach`. This gets filled in later based on the inputs in an `@app.callback` part : [code link](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L259)
+   - **Country carbon budget and timeline**, id = `country-carbon-budget`. Gets filled in based on `@app.callback` : [code link](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L267)
 3. A series of 'callback' functions to update the above app layout based on changing inputs : [link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L202)
 
 Currently, based on a [given country](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L38) and [carbon budget](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L52), the app calculates:
 
-- the [global reach](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L256) of the given carbon budget
-- a [country-specific carbon budget](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L286) (2016)
-- assuming 2018 and 2019 emissions equal to 2017 emissions (latest data in EDGAR database), it calculates the [country-specific remaining carbon budget from 2020 onwards](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L303), together with years left at [constant](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L314) or [linearly decreasing](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L326) emissions.
+- the [global reach (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L256) of the given carbon budget
+- a [country-specific carbon budget (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L286) (2016)
+- assuming 2018 and 2019 emissions equal to 2017 emissions (latest data in EDGAR database), it calculates the [country-specific remaining carbon budget from 2019 onwards (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L303), together with years left at [constant (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L314) or [linearly decreasing !this might not be correct! (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L326) emissions.
 
-# To do / stuck
+# To do / stuck:
 
 What would be nice to implement is:
 
-- A function/code/loop that calculates a linear decrease in emissions and feeds this into a series that can be plotted in the third part (`Future` data) in the graph [here](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L144) (static) and [here](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L233) (dynamic with callback), based on:
-  - the country-specific carbon budget left from 2020 onwards : [link to coce](https://github.com/floriandierickx/emission-budgets/blob/ffbcb24ce65d473483d3ebdcf492fc135316b984/app.py#L303)
-  - years left for the country to go to zero : [link to code](https://github.com/floriandierickx/emission-budgets/blob/ffbcb24ce65d473483d3ebdcf492fc135316b984/app.py#L326)
+- A function/code/loop that calculates a linear decrease in emissions and feeds this into a series that can be plotted in the third part (`Future` data) in the graph [here (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L144) (static) and [here (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L233) (dynamic with callback), based on:
+  - the country-specific carbon budget left from 2020 onwards : [code link](https://github.com/floriandierickx/emission-budgets/blob/ffbcb24ce65d473483d3ebdcf492fc135316b984/app.py#L303)
+  - years left for the country to go to zero : [code link](https://github.com/floriandierickx/emission-budgets/blob/ffbcb24ce65d473483d3ebdcf492fc135316b984/app.py#L326)
 
 At the moment it just plots again the historical data.
 
 Help is welcome!
+
+UPDATE : more detailed information on how this could be calculated is discussed in [https://github.com/floriandierickx/emission-budgets/issues/1](this issue).
 
 # Workflow
 
