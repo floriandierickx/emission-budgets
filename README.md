@@ -9,7 +9,6 @@ Idea is to visualise countries remaining carbon budget interactively, based on t
 
 The original [dataset](http://www.realclimate.org/index.php/archives/2019/08/how-much-co2-your-country-can-still-emit-in-three-simple-steps/) is extended with [EDGAR historical emissions data from JRC](https://edgar.jrc.ec.europa.eu/overview.php?v=booklet2018) and [World Bank Population data](https://databank.worldbank.org/reports.aspx?source=2&series=SP.POP.TOTL&country=#). The combined dataset that is used in the application can be found in [this google sheet](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing) (imported sheet = `import`). To be able to display the historical EDGAR emission data for each country, the country order in the original excel sheet has been changed a little bit.
 
-
 # What is currently working
 
 Note: the app uses Dash and Plotly to create an interactive figure. The script `app.py` is divided in 3 main parts:
@@ -19,12 +18,12 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
       - `global_budget_2016 = 580 + 80` : used for testing, not reused in the code
       - `global_emissions = 40` : global emissions in 2016 (Gt CO2), taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E16`
       - `global_per_capita_emissions = 5.4` : global per capita emissions in 2016 (t CO2), taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E18`
-2. The app layout with text, interative inputs and outputs : [https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L33](code link). It contains
+2. The app layout with text, interative inputs and outputs : [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L33). It contains
    - A **country-selection box**, id = `country-dropdown` to be selected from `df_budget.country`
    - **Global carbon budget input**, id = `carbon-budget` to stay within the range of `50` and `2500`
    - **Global reach of global carbon budget paragraph** :, id = `global-reach`. This gets filled in later based on the inputs in an `@app.callback` part : [code link](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L259)
    - **Country carbon budget and timeline**, id = `country-carbon-budget`. Gets filled in based on `@app.callback` : [code link](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L267)
-3. A series of 'callback' functions to update the above app layout based on changing inputs : [link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L202)
+3. A series of 'callback' functions to update the above app layout based on changing inputs : [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L202)
 
 Currently, based on a [given country](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L38) and [carbon budget](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L52), the app calculates:
 
