@@ -23,13 +23,17 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
    - **Global carbon budget input**, id = `carbon-budget` to stay within the range of `50` and `2500`
    - **Global reach of global carbon budget paragraph** :, id = `global-reach`. This gets filled in later based on the inputs in an `@app.callback` part : [code link](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L259)
    - **Country carbon budget and timeline**, id = `country-carbon-budget`. Gets filled in based on `@app.callback` : [code link](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L267)
-3. A series of 'callback' functions to update the above app layout based on changing inputs : [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L202)
-
-Currently, based on a [given country](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L38) and [carbon budget](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L52), the app calculates:
-
-- the [global reach (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L256) of the given carbon budget
-- a [country-specific carbon budget (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L286) (2016)
-- assuming 2018 and 2019 emissions equal to 2017 emissions (latest data in EDGAR database), it calculates the [country-specific remaining carbon budget from 2019 onwards (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L303), together with years left at [constant (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L314) or [linearly decreasing !this might not be correct! (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L326) emissions.
+   - a **bar chart** (id: `emission-graph`) displaying:
+     - ***Historical emissions*** : [code link](https://github.com/floriandierickx/emission-budgets/blob/51e338669ddeb379829c949c790ac6ebafc68bfe/app.py#L123)
+     - ***"Recent" (2018/2019) emissions*** : [code link](https://github.com/floriandierickx/emission-budgets/blob/51e338669ddeb379829c949c790ac6ebafc68bfe/app.py#L133)
+     - *TO DO* : implement ***future linear decrease in country carbon budget*** : [code link](https://github.com/floriandierickx/emission-budgets/blob/51e338669ddeb379829c949c790ac6ebafc68bfe/app.py#L143)
+3. A series of 'callback' functions to update the above app layout based on changing inputs, [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L202) :
+   - **Update of the emission graph** (id: `emission-graph`) based on country : [code link](https://github.com/floriandierickx/emission-budgets/blob/51e338669ddeb379829c949c790ac6ebafc68bfe/app.py#L204)
+   - Calculation of the **global reach of the given global emission budget** [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L256)
+   - Calculation of a **country-specific carbon budgets**, divided in:
+     - ***Country-specific carbon budget in 2016*** (year of the Paris agreement) : [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L286)
+     - ***Country-specific carbon budget remaining from 2019 onwards*** : [code link](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L303)
+   - Calculation of country-specific years left at [constant (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L314) or [linearly decreasing !this might not be correct! (code link)](https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L326) emissions.
 
 # To do / stuck:
 
