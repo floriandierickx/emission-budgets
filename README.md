@@ -17,7 +17,7 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
    - `df_budget = pd.read_csv("data.csv")` : importing the `data.csv` file, which is the same as the `input` sheet in the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing)
    - definition of global variables:
       - `global_budget_2016 = 580 + 80` : used for testing, not reused in the code
-      - `global_emissions = 40` : global emissions in 2016 (Gt CO2), taken from the spreadsheet, taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E16`
+      - `global_emissions = 40` : global emissions in 2016 (Gt CO2), taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E16`
       - `global_per_capita_emissions = 5.4` : global per capita emissions in 2016 (t CO2), taken from the [google sheets](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing), cell `E18`
 2. The app layout with text, interative inputs and outputs : [https://github.com/floriandierickx/emission-budgets/blob/4578f0b1fd0ade04d289d75fef4621d751529e51/app.py#L33](code link). It contains
    - A **country-selection box**, id = `country-dropdown` to be selected from `df_budget.country`
