@@ -293,9 +293,9 @@ def update_country_div(selected_country, carbon_budget):
               * global_per_capita_emissions[0]
               / 1000, 2),
 
-        #########################
-        # country carbon budget #
-        #########################
+        ##########################
+        # country emissions 2017 #
+        ##########################
 
         round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),
 
