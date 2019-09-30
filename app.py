@@ -281,9 +281,9 @@ def update_country_div(selected_country, carbon_budget):
     budget left from 2020 onwards is {} Mton CO2. \
     This is equal to {} years of constant emissions, or {} years when linearly decreasing emissions.'.format(
 
-        #########################
-        # country carbon budget #
-        #########################
+        ###########################################
+        # country carbon budget from 2016 onwards #
+        ###########################################
 
         round(((carbon_budget + 80)  # carbon budget country
                * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
@@ -298,9 +298,9 @@ def update_country_div(selected_country, carbon_budget):
 
         round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),
 
-        ###################################
-        # country carbon budget from 2020 #
-        ###################################
+        ###########################################
+        # country carbon budget from 2019 onwards #
+        ###########################################
 
         round(((carbon_budget + 80)  # carbon budget country
                * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
@@ -309,9 +309,9 @@ def update_country_div(selected_country, carbon_budget):
               * global_per_capita_emissions[0]
               / 1000 - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2),
 
-        ####################################
-        # years in cte emissions from 2020 #
-        ####################################
+        ############################################
+        # years in cte emissions from 2019 onwards #
+        ############################################
 
         round((((carbon_budget + 80)  # carbon budget country
                * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
@@ -322,7 +322,7 @@ def update_country_div(selected_country, carbon_budget):
               / df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),
 
         ########################################
-        # years decreasing emissions from 2020 #
+        # years decreasing emissions from 2019 # : ??? this might not be correct
         ########################################
 
         round((((carbon_budget + 80)  # carbon budget country
