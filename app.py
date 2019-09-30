@@ -19,7 +19,7 @@ df_budget = pd.read_csv("data.csv")
 external_stylesheets = [
     'https://codepen.io/chriddyp/pen/bWLwgP.css']  # select stylesheet
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app.title = 'Country Carbon Budget Calculator'
+app.title = 'Country Emission Budget Calculator'
 server = app.server
 
 # define variables
