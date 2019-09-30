@@ -87,12 +87,11 @@ app.layout = html.Div(children=[
 
         html.P([
             html.H3('Rationale'),
-            html.P(['Below figure displays historical emissions and a linear decrease in carbon emissions \
-            for the selected country with as baseline the year 2016 of the Paris agreement. It displays a \
+            html.P(['Below figure displays the historical emissions in your country (recent 2018 and 2019 emissions are assumed to \
+            have stayed equal at 2017-values, the latest data available in the EDGAR dataset), and a \
             linear decrease in the share of the countries carbon budget, starting from the remaining carbon \
             budget from 2016 (the 2018 budget + 80 Gt CO2 for two years of emissions) when the yearly global \
-            and per capita emissions were respectively 40 Gt and 5.4 t CO2. Assuming for example a 2018 carbon \
-            budget of 580 Gt, in 2016 the world had 16.5 years left at constant emissions.',
+            and per capita emissions were respectively 40 Gt and 5.4 t CO2.',
                     ]),
         ]),
 
@@ -172,7 +171,7 @@ app.layout = html.Div(children=[
     html.P(['Created by ',  # acknowledgement
             html.A("Florian Dierickx",
                    href='https://floriandierickx.github.io/', target='_blank'),
-            ' based on the ',
+            ' [and ..., ...] based on the ',
             html.A("idea", href='http://www.realclimate.org/index.php/archives/2019/08/how-much-co2-your-country-can-still-emit-in-three-simple-steps/', target='_blank'),
             ' and ',
             html.A("data", href='www.pik-potsdam.de/~stefan/Country%20CO2%20emissions%202016%20calculator.xlsx', target='_blank'),
