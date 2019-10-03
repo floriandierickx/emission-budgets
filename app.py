@@ -32,7 +32,7 @@ app.layout = html.Div(children=[
     dcc.Markdown(
         dangerously_allow_html=True, children=['''
         # Carbon Emission Budget Calculator
-        ## How much CO<sub>2</sub> can your country (and <img src="https://static.thenounproject.com/png/1240316-200.png" style="height:1em; width:1em;"> you) still emit to stay below **1.5** or **2** °C warming ?
+        ## How much CO<sub>2</sub> can your country still emit to stay below **1.5** or **2** °C warming ?
         ''']),
     html.Div([  # start interactive inputs
 
