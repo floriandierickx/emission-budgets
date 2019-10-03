@@ -34,7 +34,7 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
    - **Update of the personal emission graph** (id: `emission-graph`) based on country : [code link](https://github.com/floriandierickx/emission-budgets/blob/1f2e65f56a09f20433d356fd3ebe405c877f1ada/app.py#L358)
    - Calculation of the **global reach of the given global emission budget**, **country-specific budgets**, **country-specific carbon budget (2016)**, **country-specific carbon budget from 2019 onwards**, **years left at constant emissions** or **linearly decreasing emissions** [code link](https://github.com/floriandierickx/emission-budgets/blob/1f2e65f56a09f20433d356fd3ebe405c877f1ada/app.py#L458)
 
-# Detailed information on calculations
+# Calculations
 
 - The **country-specific annual emission in 2017, 2018 or 2019**: assumed to have stayed the same as in 2017, as is this the latest data available for all the countries in the JRC EDGAR historical emission database (and 2019 is almost over). This yearly emission data for a specific country can be taken directly from the imported dataset using
   ```python
