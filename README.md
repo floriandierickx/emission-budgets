@@ -69,11 +69,11 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
 
   *System of equations*:
 
-  ![equations-system](/Users/florian/repos/emission-budgets/formulas/equations-system.png)
+  ![](https://i.imgur.com/B28904u.png)
 
   *Solution*:
 
-  ![equations-solution](/Users/florian/repos/emission-budgets/formulas/equations-solution.png)
+  ![](https://i.imgur.com/OL6TRsj.png)
 
   - As emissions in 2019 are assumed to be fixed, the remaining budget before linear decrease needs to be reduced with the 2019 emissions. The depletion time can be then be calculated as:
 
