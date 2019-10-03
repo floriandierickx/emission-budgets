@@ -76,7 +76,41 @@ UPDATE : more detailed information on how this could be calculated is discussed 
   - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2)
   ```
 
-From then it is straightforward to calculate the **remaining years left at constant emissions** for each country, by dividing the remaining carbon budget from 2019 onwards by a constant 2017 (or 2018/2019) emission level, as done in [line 316 to 322](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L316).
+- From then it is straightforward to calculate the **remaining years left at constant emissions** for each country, by dividing the remaining carbon budget from 2019 onwards by a constant 2017 (or 2018/2019) emission level, as done in [line 316 to 322](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L316).
+
+  ```python
+  / df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
+  ```
+
+- To calculate the **time before depletion** and **yearly rate of emission decrease** in the case of linear decrease until the remaining budget is depleted [emissions~t~ = emissions~2019~ - slope . t~depletion~] we can start from the premise that the total budget (`budget`) and starting emissions (`emissions_2019`) are known, out of which we can calculate the `slope` (rate of decrease) and time before depletion (`t_depletion`):
+
+  *System of equations*:
+
+  ![equations-system](/Users/florian/repos/emission-budgets/formulas/equations-system.png)
+
+  *Solution*:
+
+  ![equations-solution](/Users/florian/repos/emission-budgets/formulas/equations-solution.png)
+
+  - As emissions in 2019 are assumed to be fixed, the remaining budget before linear decrease needs to be reduced with the 2019 emissions. The depletion time can be then be calculated as:
+
+    ```python
+    (round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
+             /
+             ((round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2) ^ 2)
+                /
+                (2 * round(((carbon_budget + 80)  # carbon budget country
+                            * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
+                           / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
+                           / global_emissions[0]
+                           * global_per_capita_emissions[0]
+                           / 1000
+                           - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2) - round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2))
+             )
+            )
+    ```
+
+  -  
 
 # Workflow
 
