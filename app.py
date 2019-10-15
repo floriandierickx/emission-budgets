@@ -258,8 +258,19 @@ app.layout = html.Div(children=[
             html.A(
                 "GitHub", href='https://github.com/floriandierickx/emission-budgets', target='_blank'),
             '.',
+            dcc.Markdown(
+                dangerously_allow_html=True, children=['''
+                If you use the application in a scientific work, please use <a href="https://www.zenodo.org/badge/latestdoi/211486285" target="_blank"><img src="https://www.zenodo.org/badge/211486285.svg"></a>
+                ''']),
+            html.A(''),
             ]),
 ])
+
+dcc.Markdown(
+    dangerously_allow_html=True, children=['''
+    # Carbon Emission Budget Calculator
+    ## How much CO<sub>2</sub> can your country still emit to stay below **1.5** or **2** °C warming ?
+    ''']),
 
 #################################
 # UPDATE COUNTRY BAR PLOT BASED #
@@ -344,7 +355,7 @@ def update_figure(selected_country, carbon_budget):
         ),
         ],
         'layout': {
-            'title': 'Historical Emissions and Future Emission Budget for {}'.format(selected_country),
+            'title': 'Historical Emissions and Future Emission Budget for {} <br><sub>Source: @FlorianDRX</sub>'.format(selected_country) ,
             'xaxis': {
                 'title': 'Year'
             },
@@ -443,7 +454,7 @@ def update_figure(selected_country, carbon_budget):
 
         ],
         'layout': {
-            'title': 'Personal Future Emission Budget in {}'.format(selected_country),
+            'title': 'Personal Future Emission Budget in {} <br><sub>Source: @FlorianDRX</sub>'.format(selected_country),
             'xaxis': {
                 'title': 'Year'
             },
