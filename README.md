@@ -42,7 +42,7 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
   ```
   (see [line 299](https://github.com/floriandierickx/emission-budgets/blob/21ef1b909c20e65c9a22da714e19d46104c9270f/app.py#L299))
 
-- The **country-specific emission budget that can be used from 2016 onwards** (year of the Paris agreement). This value can be calculated from the data using (see [lines 288 to 293](https://github.com/floriandierickx/emission-budgets/blob/21ef1b909c20e65c9a22da714e19d46104c9270f/app.py#L288), based on the premise that the budget is distributed on an equal per capita basis at the start of 2016.
+- The **country-specific emission budget that can be used from the start of 2016 onwards** (year of the Paris agreement). This value can be calculated from the data using (see [lines 288 to 293](https://github.com/floriandierickx/emission-budgets/blob/21ef1b909c20e65c9a22da714e19d46104c9270f/app.py#L288), based on the premise that the budget is distributed on an equal per capita basis at the start of 2016.
   ```python
   round(((carbon_budget + 80)  # carbon budget country
       * df_budget.loc[df_budget['country'] == selected_country,   'total_kton_CO2'].values.flatten().tolist()[0])
@@ -56,12 +56,12 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
 
   (taken from the [spreadsheet](https://docs.google.com/spreadsheets/d/1R1U8iwlf2NdHDj6ykzgUqocQDfpbVB6i8lsStN3eNlo/edit?usp=sharing) of Stefan Rahmstorf - for example cell E25 for Afghanistan in the `original` sheet. I hope I interpreted it here correctly)
 
-- The **country-specific emission budget that is left to deplete from 2019 onwards**, accounting for the 2 years that have already passed: this can be calculated by using the above 2016-country emission budget and deducing two years of constant 2017-emissions (see [lines 305-310](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L305)), by substracting
+- The **country-specific emission budget that is left to deplete from 2020 onwards**, accounting for the 4 years that have already passed: this can be calculated by using the above 2016-country emission budget and deducing the 2016 emissions + three yeras of constant 2017-emissions - 2018 and 2019 are assumed to have stayed constant as 2017 is the latest data available in the EDGAR dataset (see [lines 305-310](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L305)), by substracting
   ```python
-  - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2)
+  - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (3 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]))
   ```
 
-- From then it is straightforward to calculate the **remaining years left at constant emissions** for each country, by dividing the remaining carbon budget from 2019 onwards by a constant 2017 (or 2018/2019) emission level, as done in [line 316 to 322](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L316).
+- From then it is straightforward to calculate the **remaining years left at constant emissions from 2020 onwards** for each country, by dividing the remaining carbon budget from 2020 onwards by a constant 2017 (or 2018/2019) emission level, as done in [line 316 to 322](https://github.com/floriandierickx/emission-budgets/blob/472c6792fa246b28cca8886138d673409e73a518/app.py#L316).
 
   ```python
   / df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
