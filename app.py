@@ -276,6 +276,7 @@ dcc.Markdown(
 # UPDATE COUNTRY BAR PLOT BASED #
 #################################
 
+
 @app.callback(
     Output('emissions-graph', 'figure'),   # insert graph name
     [Input(component_id='country-dropdown', component_property='value'),
@@ -284,36 +285,36 @@ dcc.Markdown(
 def update_figure(selected_country, carbon_budget):
 
     # define variables to be used for future emissions
-
     # emissions in 2019
+
     emissions_2019 = round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),
 
     # time until depletion of budget (round to 0 numbers after the comma)
+
     t_depletion = (round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
                   /
                   ((round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2) ** 2)
                    /
                    (2 * round(((carbon_budget + 80)  # carbon budget country
-                              * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
-                              / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
-                              / global_emissions[0]
-                              * global_per_capita_emissions[0]
-                              / 1000
-                              - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2) - round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 0))
+                                             * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
+                                             / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
+                                             / global_emissions[0]
+                                             * global_per_capita_emissions[0]
+                                             / 1000 - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])), 2)
                    )
-                  ),
+                  )),
 
     # yearly rate of decrease
     slope = ((round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2) ** 2)
-            /
-            (2 * round(((carbon_budget + 80)  # carbon budget country
-                       * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
-                       / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
-                       / global_emissions[0]
-                       * global_per_capita_emissions[0]
-                       / 1000
-                       - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2) - round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 0))),
-
+             /
+             (2 * round(((carbon_budget + 80)  # carbon budget country
+                                           * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
+                                           / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
+                                           / global_emissions[0]
+                                           * global_per_capita_emissions[0]
+                                           / 1000 - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])), 2)
+             )
+            ),
 
     # for loop to create list with decreasing emission values
     t_depletion_int = int(t_depletion[0]) # create integer value of year to go to zero (remove numbers after the comma: transform from float to int)
@@ -392,7 +393,7 @@ def update_figure(selected_country, carbon_budget):
                               / global_emissions[0]
                               * global_per_capita_emissions[0]
                               / 1000
-                              - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2) - round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 0))
+                              - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])), 2))
                    )
                   ),
 
@@ -405,7 +406,7 @@ def update_figure(selected_country, carbon_budget):
                        / global_emissions[0]
                        * global_per_capita_emissions[0]
                        / 1000
-                       - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2) - round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 0))),
+                       - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])), 2))),
 
     # country population
     population = round(df_budget.loc[df_budget['country'] == selected_country, 'population'].values.flatten().tolist()[0], 2),
@@ -479,12 +480,12 @@ def update_figure(selected_country, carbon_budget):
 
 def update_country_div(selected_country, carbon_budget):
     style = {'font-weight': 'bold'}
-    return ['In 2016, it would have taken ',
+    return ['At the start of 2016, it would have taken ',
     html.Span('{}'.format((carbon_budget + 80) / 40,), style=style), # Global reach from 2016 onwards
     ' years of constant worldwide emissions before the carbon budget was depleted. \
     From 2020 onwards, this will be reduced to ',
     html.Span('{}'.format(((carbon_budget + 80) / 40) - 4,), style=style), # Global reach from 2020 onwards
-    ' years. In 2016, the remaining carbon budget for your country was ',
+    ' years. At the start of 2016, the remaining carbon budget for your country was ',
     html.Span('{}'.format(round(((carbon_budget + 80)  # country carbon budget from 2016 onwards
                                * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
                               / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
@@ -494,21 +495,21 @@ def update_country_div(selected_country, carbon_budget):
     ' Mton CO2. \
     Assuming that the 2018 and 2019-emissions in your country stayed at the level of ',
     html.Span('{}'.format(round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),), style=style), # country emissions 2017
-    ' Mton CO2 in 2017, the remaining national carbon\
+    ' Mton CO2 (last available data from 2017), the remaining national carbon\
     budget from 2020 onwards is ',
     html.Span('{}'.format(round(((carbon_budget + 80)  # carbon budget country
                               * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
                               / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
                               / global_emissions[0]
                               * global_per_capita_emissions[0]
-                              / 1000 - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2),), style=style), # country carbon budget from 2019 onwards
+                              / 1000 - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (3 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])), 2),), style=style), # country carbon budget from 2019 onwards
     ' Mton CO2. This is equal to ',
     html.Span('{}'.format(round((((carbon_budget + 80)  # carbon budget country
           * df_budget.loc[df_budget['country'] == selected_country, 'total_kton_CO2'].values.flatten().tolist()[0])
           / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
           / global_emissions[0]
           * global_per_capita_emissions[0]
-          / 1000 - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]))
+          / 1000 - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (3 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])))
           / df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2),), style=style), # years in cte emissions from 2019 onwards
     ' years of constant emissions, or ',
     html.Span('{}'.format(round((round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
@@ -520,11 +521,11 @@ def update_country_div(selected_country, carbon_budget):
                    / df_budget.loc[df_budget['country'] == selected_country, 'per_capita_CO2'].values.flatten().tolist()[0]
                    / global_emissions[0]
                    * global_per_capita_emissions[0]
-                   / 1000 - (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0]), 2)
-                   - round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2))
+                   / 1000 - (df_budget.loc[df_budget['country'] == selected_country, '2016'].values.flatten().tolist()[0] + (2 * df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0])), 2)
+                   )
      )
-    ), 2),), style=style), # Global reach from 2016 onwards
-    ' years when linearly decreasing emissions.']
+    ) - 1, 2),), style=style), # Global reach from 2016 onwards
+    ' years when linearly decreasing emissions.',]
 
 if __name__ == '__main__':
     app.run_server(debug=True)
