@@ -67,7 +67,7 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
   / df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
   ```
 
-- To calculate the **time before depletion** and **yearly rate of emission decrease** in the case of linear decrease until the remaining budget is depleted [emissions(t) = emissions(2019) - slope . t(depletion)] we can start from the premise that the total budget (`budget`) and starting emissions (`emissions_2019`) are known, out of which we can calculate the `slope` (rate of decrease) and time before depletion (`t_depletion`):
+   - To calculate the **time before depletion** and **yearly rate of emission decrease** in the case of linear decrease until the remaining budget is depleted [emissions(t) = emissions(2019) - slope . t(depletion)] we can start from the premise that the total budget (`budget`) and starting emissions (`emissions_2019`) are known, out of which we can calculate the `slope` (rate of decrease) and time before depletion (`t_depletion`):
 
   *System of equations*:
 
@@ -77,7 +77,7 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
 
   ![](https://i.imgur.com/OL6TRsj.png)
 
-  - As emissions in 2019 are assumed to be fixed, the remaining budget before linear decrease needs to be reduced with the 2019 emissions. The depletion time can be then be calculated as:
+  - The depletion time can be then be calculated as:
 
     ```python
     (round(df_budget.loc[df_budget['country'] == selected_country, '2017'].values.flatten().tolist()[0], 2)
