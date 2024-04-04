@@ -98,10 +98,10 @@ Note: the app uses Dash and Plotly to create an interactive figure. The script `
 # Development and workflow
 
 - The app can be run on a local server. See below for more information.
-- This github respository is linked to a Heroku application (https://emission-budgets.herokuapp.com/), that updates automatically each time the GitHub repository is updated.
+- This github respository is showcased using a Railway application ([emission-budgets.up.railway.app/](https://emission-budgets.up.railway.app/)).
 
 ## Running the app locally for testing
-Note: instructions are for OSX with Homebrew and Anaconda installed.
+Note: instructions are for OSX with Homebrew and Anaconda or Windows with Anaconda installed.
 
 Information taken from https://towardsdatascience.com/how-to-create-your-first-web-app-using-python-plotly-dash-and-google-sheets-api-7a2fe3f5d256.
 
