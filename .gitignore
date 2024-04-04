@@ -6,3 +6,4 @@ token.pickle
 credentials.json
 app-other
 old
+.vscode/settings.json

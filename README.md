@@ -107,8 +107,8 @@ Information taken from https://towardsdatascience.com/how-to-create-your-first-w
 
 ### create conda environment and install required packages
 ```
-conda create --name emission-budgets python=3.6
-source activate emission-budgets
+conda create --name emission-budgets python=3.8
+conda activate emission-budgets
 pip install dash
 pip install dash-renderer
 pip install dash-core-components
@@ -116,9 +116,6 @@ pip install dash-html-components
 pip install plotly
 pip install dash-table-experiments
 pip install numpy
-pip install pandas
-pip install gunicorn
-pip install google-api-python-clientpip install numpy
 pip install pandas
 pip install gunicorn
 ```
