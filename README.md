@@ -1,4 +1,6 @@
 [![DOI](https://zenodo.org/badge/211486285.svg)](https://zenodo.org/badge/latestdoi/211486285)
+# Live application (kuberns.com):
+[https://emission-budgets-master-02be942.kuberns.cloud](https://emission-budgets-master-02be942.kuberns.cloud)
 
 # Concept
 
